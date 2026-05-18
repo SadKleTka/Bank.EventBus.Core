@@ -1,0 +1,6 @@
+@Bank.EventBus.Core_HostAddress = http://localhost:5076
+
+GET {{Bank.EventBus.Core_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
