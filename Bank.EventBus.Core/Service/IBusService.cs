@@ -8,7 +8,7 @@ public interface IBusService
 {
     Task<Message> CreateCollection(CollectionToCreate collectionToCreate);
     Task<Message> CreateOperation(OperationToCreate operationToCreate);
-    List<Collections> GetAllCollections();
-    List<BusOperations> GetAllOperations();
+    List<CollectionToAnswer> GetAllCollections();
+    List<OperationToAnswer> GetAllOperations();
     Task<Message> Bind(BindCollectionOperation bindCollectionOperation);
 }

@@ -29,14 +29,14 @@ public class BusController : ControllerBase
     }
 
     [HttpGet("operations")]
-    public ActionResult<List<BusOperations>> GetAllOperations()
+    public ActionResult<List<OperationToAnswer>> GetAllOperations()
     {
         _logger.LogInformation("Get operations method has been initialized.");
         return Ok(_service.GetAllOperations());
     }
 
     [HttpGet("collections")]
-    public ActionResult<List<Collections>> GetAllCollections()
+    public ActionResult<List<CollectionToAnswer>> GetAllCollections()
     {
         _logger.LogInformation("Collection creation method has been initialized.");
         return Ok(_service.GetAllCollections());
