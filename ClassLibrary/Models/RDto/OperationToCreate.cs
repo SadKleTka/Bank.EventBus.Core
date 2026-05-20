@@ -1,6 +1,3 @@
 namespace ClassLibrary.Models.RDto;
 
-public class OperationToCreate
-{
-    
-}
+public record OperationToCreate(string Type, string Version, string Description);

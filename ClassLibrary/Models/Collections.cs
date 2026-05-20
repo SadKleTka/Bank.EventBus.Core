@@ -2,6 +2,16 @@ namespace Bank.EventBus.Worker.Models.Dto;
 
 public class Collections
 {
+
+    public Collections(string title, string description, string exchangeName, string queueName, string routingKey)
+    {
+        Title = title;
+        Description = description;
+        ExchangeName = exchangeName;
+        QueueName = queueName;
+        RoutingKey = routingKey;
+    }
+    
     public Guid Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
