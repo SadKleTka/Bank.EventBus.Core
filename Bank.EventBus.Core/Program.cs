@@ -1,4 +1,5 @@
 using Bank.EventBus.Core.Data;
+using Bank.EventBus.Core.Service;
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSingleton<RabbitMqConnectionProvider>();
+builder.Services.AddScoped<IBusService, BusService>();
 
 var app = builder.Build();
 
