@@ -2,6 +2,15 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.EventBus.Core", "Bank.EventBus.Core\Bank.EventBus.Core.csproj", "{C988BC5C-400C-4A05-85C4-29F27C5B94F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{D648CE48-A845-4104-A001-F412B3149F7A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{71CA251B-8E50-4914-99C4-0AFE264A0787}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC975663-DA5B-4B22-85C5-ACD3A2AE6D90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +21,13 @@ Global
 		{C988BC5C-400C-4A05-85C4-29F27C5B94F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C988BC5C-400C-4A05-85C4-29F27C5B94F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C988BC5C-400C-4A05-85C4-29F27C5B94F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D648CE48-A845-4104-A001-F412B3149F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D648CE48-A845-4104-A001-F412B3149F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D648CE48-A845-4104-A001-F412B3149F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D648CE48-A845-4104-A001-F412B3149F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C988BC5C-400C-4A05-85C4-29F27C5B94F0} = {FC975663-DA5B-4B22-85C5-ACD3A2AE6D90}
+		{D648CE48-A845-4104-A001-F412B3149F7A} = {71CA251B-8E50-4914-99C4-0AFE264A0787}
 	EndGlobalSection
 EndGlobal
