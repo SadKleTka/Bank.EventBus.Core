@@ -1,6 +1,3 @@
 namespace ClassLibrary.Models.RDto;
 
-public class BindCollectionOperation
-{
-    
-}
+public record BindCollectionOperation(string CollectionId, string OperationId);

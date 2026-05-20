@@ -1,6 +1,3 @@
 namespace ClassLibrary.Models.RDto;
 
-public class Message
-{
-    
-}
+public record Message(string MessageToSent, DateTime CreatedAt);
