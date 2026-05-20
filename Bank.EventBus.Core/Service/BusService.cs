@@ -14,7 +14,7 @@ public class BusService : IBusService
     private readonly RabbitMqConnectionProvider _connectionProvider;
     private readonly ILogger<BusService> _logger;
     
-    public  BusService(AppDbContext context, RabbitMqConnectionProvider connectionProvider, ILogger<BusService> logger)
+    public BusService(AppDbContext context, RabbitMqConnectionProvider connectionProvider, ILogger<BusService> logger)
     {
         _context = context;
         _connectionProvider = connectionProvider;
@@ -25,13 +25,17 @@ public class BusService : IBusService
     {
         try
         {
-            var collection = 
-                _context.Collections.FirstOrDefault(c => c.Id.ToString() == bind.CollectionId);
+            var collection =
+                _context.Collections
+                    .Include(o => o.Operations)
+                    .FirstOrDefault(c => c.Id.ToString() == bind.CollectionId);
             if (collection is null)
                 throw new ArgumentNullException($"{nameof(bind.CollectionId)} is not exist");
             
             var operation = 
-                _context.Operations.FirstOrDefault(o => o.Id.ToString() == bind.OperationId);
+                _context.Operations
+                    .Include(o => o.Collections)
+                    .FirstOrDefault(o => o.Id.ToString() == bind.OperationId);
             if (operation is null)
                 throw new ArgumentNullException($"{nameof(bind.OperationId)} is not exist");
             
@@ -45,6 +49,9 @@ public class BusService : IBusService
                     operation.Id,
                     collection.Id);
             
+            operation.Collections.Add(newBind);
+            collection.Operations.Add(newBind);
+            
             await _context.BusCollectionsOperations.AddAsync(newBind);
             await _context.SaveChangesAsync();
             return new Message("success", DateTime.UtcNow);
@@ -57,7 +64,7 @@ public class BusService : IBusService
     }
     
     //Получить все операции для просмотра
-    public List<BusOperations> GetAllOperations()
+    public List<OperationToAnswer> GetAllOperations()
     {
         try
         {
@@ -65,7 +72,7 @@ public class BusService : IBusService
             if (operations.Count == 0)
                 throw new ArgumentNullException($"{nameof(operations)} is empty");
             
-            return operations;
+            return OperationMapper(operations);
         }
         catch (Exception ex)
         {
@@ -75,7 +82,7 @@ public class BusService : IBusService
     }
     
     //Получить все коллекции для просмотра
-    public List<Collections> GetAllCollections()
+    public List<CollectionToAnswer> GetAllCollections()
     {
         try
         {
@@ -83,7 +90,7 @@ public class BusService : IBusService
             if (collections.Count == 0)
                 throw new ArgumentNullException($"{nameof(collections)} is empty");
             
-            return collections;
+            return CollectionMapper(collections);
         }
         catch (Exception ex)
         {
@@ -150,5 +157,35 @@ public class BusService : IBusService
             _logger.LogError(ex.Message);
             return new Message(ex.Message, DateTime.UtcNow);
         }
+    }
+
+    private static List<OperationToAnswer> OperationMapper(List<BusOperations> operations)
+    {
+        List<OperationToAnswer> list = new List<OperationToAnswer>();
+        foreach (var operation in operations)
+        {
+            list.Add(new OperationToAnswer(
+                operation.Id,
+                operation.Type,
+                operation.Version,
+                operation.Description));
+        }
+        return list;
+    }
+
+    private static List<CollectionToAnswer> CollectionMapper(List<Collections> collections)
+    {
+        List<CollectionToAnswer> list = new List<CollectionToAnswer>();
+        foreach (var collection in collections)
+        {
+            list.Add(new CollectionToAnswer(
+                collection.Id,
+                collection.Title,
+                collection.Description,
+                collection.ExchangeName,
+                collection.QueueName,
+                collection.RoutingKey));
+        }
+        return list;
     }
 }
