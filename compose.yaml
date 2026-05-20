@@ -1,0 +1,17 @@
+﻿services:
+  db:
+    image: postgres:latest
+    container_name: bus.worker.service
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: bus.db
+    ports:
+      - "5439:5432"
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: bus.worker.service
+    ports:
+      - "5679:5672"
+      - "15679:15672"
