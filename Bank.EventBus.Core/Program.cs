@@ -2,6 +2,8 @@ using Bank.EventBus.Core.Data;
 using Bank.EventBus.Core.Service;
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
+using Bank.EventBus.Worker;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddSingleton<RabbitMqConnectionProvider>();
 builder.Services.AddScoped<IBusService, BusService>();
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    ConnectionMultiplexer.Connect("100.122.211.84:6379, abortConnect=false"));
+builder.Services.AddHostedService<RedisRefresh>();
 
 var app = builder.Build();
 

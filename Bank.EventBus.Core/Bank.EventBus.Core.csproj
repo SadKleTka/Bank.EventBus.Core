@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+      <ProjectReference Include="..\Bank.EventBus.Worker\Bank.EventBus.Worker.csproj" />
     </ItemGroup>
 
 </Project>
