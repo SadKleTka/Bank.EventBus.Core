@@ -4,6 +4,14 @@ namespace Bank.EventBus.Worker.Models;
 
 public class BusCollectionsOperations
 {
+
+    public BusCollectionsOperations(DateTime createdAt, Guid collectionId, Guid busOperationId)
+    {
+        CreatedAt = createdAt;
+        CollectionId = collectionId;
+        BusOperationId = busOperationId;
+    }
+    
     public Guid Id {get; set;}
     public DateTime CreatedAt {get; set;}
     

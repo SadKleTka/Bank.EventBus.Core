@@ -1,4 +1,5 @@
 using Bank.EventBus.Core.Data;
+using Bank.EventBus.Core.Service;
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSingleton<RabbitMqConnectionProvider>();
+builder.Services.AddScoped<IBusService, BusService>();
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect("100.122.211.84:6379, abortConnect=false"));
