@@ -18,10 +18,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddSingleton<RabbitMqConnectionProvider>();
 builder.Services.AddScoped<IBusService, BusService>();
 
-builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-    ConnectionMultiplexer.Connect("100.122.211.84:6379, abortConnect=false"));
-builder.Services.AddHostedService<RedisRefresh>();
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -29,7 +25,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger(); 
     app.UseSwaggerUI(); 
 }
-
 
 app.MapControllers();
 app.Run();
