@@ -53,7 +53,7 @@ public class RedisRefresh : BackgroundService
             
 
             var busCollectionsOperationsList = await dbContext.BusCollectionsOperations.AsNoTracking().ToListAsync(cancellationToken);
-            var busOps = await dbContext.BusCollectionsOperations.AsNoTracking().ToListAsync(cancellationToken);
+            var busOps = await dbContext.Operations.AsNoTracking().ToListAsync(cancellationToken);
             var collections = await dbContext.Collections.AsNoTracking().ToListAsync(cancellationToken);
 
             var db = _redis.GetDatabase();
