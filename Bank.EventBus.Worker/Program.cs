@@ -1,3 +1,4 @@
+using Bank.EventBus.BusWorker;
 using Bank.EventBus.RedisRefresh;
 using Bank.EventBus.Worker.Data;
 using ClassLibrary;
@@ -14,7 +15,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect("100.122.221.84:6379, abortConnect=false"));
 builder.Services.AddHostedService<RedisRefresh>();
 builder.Services.AddSingleton<RabbitMqConnectionProvider>();
-builder.Services.AddSingleton<BusWorker>();
+builder.Services.AddHostedService<BusWorker>();
 
 var host = builder.Build();
 host.Run();
