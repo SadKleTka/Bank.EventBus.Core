@@ -1,5 +1,6 @@
 using Bank.EventBus.Worker.Models;
 using Bank.EventBus.Worker.Models.Dto;
+using ClassLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bank.EventBus.Core.Data;
@@ -14,6 +15,8 @@ public class AppDbContext : DbContext
     public DbSet<BusOperations> Operations => Set<BusOperations>();
     
     public DbSet<BusCollectionsOperations> BusCollectionsOperations => Set<BusCollectionsOperations>();
+    
+    public DbSet<ClientRequest> ClientRequests => Set<ClientRequest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,5 +31,11 @@ public class AppDbContext : DbContext
             .WithMany(c => c.Collections)
             .HasForeignKey(c => c.BusOperationId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<ClientRequest>()
+            .OwnsOne(cr => cr.Body, bodyBuilder =>
+            {
+                bodyBuilder.ToJson();
+            });
     }
 }

@@ -1,17 +1,10 @@
-using System;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
-using Bank.EventBus.Worker.Models;
 using Microsoft.EntityFrameworkCore;
 using Bank.EventBus.Worker.Data;
 
 
-namespace Bank.EventBus.Worker;
+namespace Bank.EventBus.RedisRefresh;
 
 public class RedisRefresh : BackgroundService
 {

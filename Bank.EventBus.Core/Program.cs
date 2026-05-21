@@ -2,8 +2,6 @@ using Bank.EventBus.Core.Data;
 using Bank.EventBus.Core.Service;
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
-using StackExchange.Redis;
-using Bank.EventBus.Worker;
 
 var builder = WebApplication.CreateBuilder(args);
 
