@@ -20,11 +20,13 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<BusCollectionsOperations>()
             .HasOne(c => c.Collection)
             .WithMany(c => c.Operations)
+            .HasForeignKey(c => c.CollectionId)
             .OnDelete(DeleteBehavior.Restrict);
         
         modelBuilder.Entity<BusCollectionsOperations>()
             .HasOne(o => o.Operation)
             .WithMany(c => c.Collections)
+            .HasForeignKey(c => c.BusOperationId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

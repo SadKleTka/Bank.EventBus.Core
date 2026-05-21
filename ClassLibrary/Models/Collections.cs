@@ -9,5 +9,5 @@ public class Collections
     public string QueueName {get; set;}
     public string RoutingKey {get; set;}
     
-    public List<BusCollectionsOperations> Operations {get; set;}
+    public List<BusCollectionsOperations> Operations {get; set;} = new List<BusCollectionsOperations>();
 }

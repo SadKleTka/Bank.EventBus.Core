@@ -7,5 +7,6 @@ public class BusOperations
     public string Version {get; set;}
     public string Description {get; set;}
     
-    public List<BusCollectionsOperations> Collections {get; set;}
+    public List<BusCollectionsOperations> Collections {get; set;} = new List<BusCollectionsOperations>();
 }
+

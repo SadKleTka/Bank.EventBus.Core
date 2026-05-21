@@ -8,8 +8,7 @@
       POSTGRES_DB: bus.db
     ports:
       - "5439:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data 
+    
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -17,8 +16,7 @@
     ports:
       - "5679:5672"
       - "15679:15672"
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
+    
 
   redis:
     image: redis:alpine
@@ -26,11 +24,6 @@
     restart: unless-stopped
     ports:
       - "6379:6379"
-    volumes:
-      - redis_data:/data
+   
     command: redis-server --save 60 1 --loglevel warning
 
-volumes:
-  postgres_data:
-  rabbitmq_data:
-  redis_data:

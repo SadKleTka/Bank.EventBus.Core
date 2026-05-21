@@ -28,8 +28,8 @@ public class RabbitMqConnectionProvider
             {
                 var factory = new ConnectionFactory
                 {
-                    HostName = "localhost",
-                    Port = 5674, 
+                    HostName = "100.122.221.84",
+                    Port = 5679, 
                     UserName = "guest",
                     Password = "guest"
                 };
