@@ -30,23 +30,49 @@ public class BusWorker : BackgroundService
         _logger.LogInformation("Starting client service worker");
         try
         {
-            var connection = await _connection.GetConnectionAsync();
-            var channel = await connection.CreateChannelAsync();
-            var consumer = new AsyncEventingBasicConsumer(channel);
-
             string cacheCollectionsOperationsKey = "bank:cache:busCollectionsOperations";
             string cacheBusOperationsKey = "bank:cache:busOperations";
             string cacheCollectionsKey = "bank:cache:collections";
+            List<BusOperations>? operations = null;
+            List<BusCollectionsOperations>? collectionsOperations = null;
+            List<Collections>? collections = null;
+            
+            operations = await GetFromCacheAsync<BusOperations>(cacheBusOperationsKey);
+            collections = await GetFromCacheAsync<Collections>(cacheCollectionsKey);
+            collectionsOperations =
+                await GetFromCacheAsync<BusCollectionsOperations>(cacheCollectionsOperationsKey); 
+            _ = Task.Run(async () =>
+            {
+                using var timer = new PeriodicTimer(TimeSpan.FromMinutes(10.1));
+                while (await timer.WaitForNextTickAsync(stoppingToken))
+                {
+                    try
+                    {
+                        operations = await GetFromCacheAsync<BusOperations>(cacheBusOperationsKey);
+                        collections = await GetFromCacheAsync<Collections>(cacheCollectionsKey);
+                        collectionsOperations =
+                            await GetFromCacheAsync<BusCollectionsOperations>(cacheCollectionsOperationsKey);
+
+                        _logger.LogInformation("Local cache has been updated");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "An error ocured while local cache has been updated");
+                    }
+                }
+            }, stoppingToken);
+            
+            
+            var connection = await _connection.GetConnectionAsync();
+            var channel = await connection.CreateChannelAsync();
+            await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 10, global: false);
+            
+            var consumer = new AsyncEventingBasicConsumer(channel);
             
             consumer.ReceivedAsync += async (model, ea) =>
             {
                 try
                 {
-                    var operations = await GetFromCacheAsync<BusOperations>(cacheBusOperationsKey);
-                    var collections = await GetFromCacheAsync<Collections>(cacheCollectionsKey);
-                    var collectionsOperations =
-                        await GetFromCacheAsync<BusCollectionsOperations>(cacheCollectionsOperationsKey);
-
                     var body = ea.Body.ToArray();
                     var json = Encoding.UTF8.GetString(body);
                     var property = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
