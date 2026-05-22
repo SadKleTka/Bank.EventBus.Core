@@ -71,20 +71,23 @@ public class BusWorker : BackgroundService
                         await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
                         _logger.LogInformation("Message has been sent to default queue");
                     }
-                    
-                    if (operation is null || collection is null)
+                    else
                     {
-                        throw new ArgumentException("Config missing. Routing to error queue.");
+
+                        if (operation is null || collection is null)
+                        {
+                            throw new ArgumentException("Config missing. Routing to error queue.");
+                        }
+
+                        await channel.BasicPublishAsync(
+                            exchange: collection.ExchangeName,
+                            routingKey: collection.RoutingKey,
+                            body: ea.Body);
+
+
+                        await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
+                        _logger.LogInformation("Message has been sent");
                     }
-                    
-                    await channel.BasicPublishAsync(
-                        exchange: collection.ExchangeName,
-                        routingKey: collection.RoutingKey, 
-                        body: ea.Body);
-
-
-                    await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false); 
-                    _logger.LogInformation("Message has been sent");
 
                 }
                 catch (Exception ex)
