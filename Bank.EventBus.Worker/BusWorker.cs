@@ -60,6 +60,11 @@ public class BusWorker : BackgroundService
                         collectionsOperations?.FirstOrDefault(x => x.BusOperationId == operation?.Id);
                
                     var collection = collections?.FirstOrDefault(x => x.Id == find?.CollectionId);
+                    
+                    if (operation is null)
+                    {
+                        throw new ArgumentException("Config missing. Routing to error queue.");
+                    }
 
                     if (find is null)
                     {
@@ -73,8 +78,7 @@ public class BusWorker : BackgroundService
                     }
                     else
                     {
-
-                        if (operation is null || collection is null)
+                        if (collection is null)
                         {
                             throw new ArgumentException("Config missing. Routing to error queue.");
                         }
