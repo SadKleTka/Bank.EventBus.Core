@@ -15,9 +15,9 @@ public class BusWorker : BackgroundService
     
     private readonly ILogger<BusWorker> _logger;
     private readonly IDatabase _redis;
-    private readonly RabbitMqConnectionProvider _connection;
+    private readonly IRabbitMqConnectionProvider _connection;
 
-    public BusWorker(RabbitMqConnectionProvider connection, ILogger<BusWorker> logger, IConnectionMultiplexer redis)
+    public BusWorker(IRabbitMqConnectionProvider connection, ILogger<BusWorker> logger, IConnectionMultiplexer redis)
     {
         _logger = logger;
         _redis = redis.GetDatabase();

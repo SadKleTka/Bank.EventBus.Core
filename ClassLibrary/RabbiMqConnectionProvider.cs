@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ClassLibrary;
 
-public class RabbitMqConnectionProvider 
+public class RabbitMqConnectionProvider : IRabbitMqConnectionProvider
 {
     private readonly ILogger<RabbitMqConnectionProvider> _logger;
     

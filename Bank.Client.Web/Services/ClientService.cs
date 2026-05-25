@@ -11,18 +11,21 @@ namespace Bank.Client.Web.Services;
 public class ClientService : IClientService
 {
     private readonly ILogger<ClientService> _logger;
-    private readonly RabbitMqConnectionProvider _connection;
+    private readonly IRabbitMqConnectionProvider _connection;
     private readonly AppDbContext _context;
 
-    public ClientService(ILogger<ClientService> logger, RabbitMqConnectionProvider connection, AppDbContext context)
+    public ClientService(ILogger<ClientService> logger, IRabbitMqConnectionProvider connection, AppDbContext context)
     {
         _logger = logger;
         _connection = connection;
         _context = context;
     }
 
-    public async Task<Message> PostAsync(ClientRequestDto request)
+    public async Task<Message> PostAsync(ClientRequestDto? request)
     {
+        if (request is null)
+            return new Message("Request cannot be null", DateTime.UtcNow);
+        
         string exchange = "bus.input.exchange";
         string queue = "bus.input.queue";
         try
