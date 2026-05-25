@@ -2,8 +2,23 @@ using Bank.Client.Web.Data;
 using Bank.Client.Web.Services;
 using ClassLibrary;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+Log.Logger = new LoggerConfiguration() 
+    .ReadFrom.Configuration(builder.Configuration) 
+    
+    .Enrich.FromLogContext() 
+    
+    .WriteTo.Console() 
+    
+    .CreateLogger(); 
+
+builder.Host.UseSerilog();
+
+
 
 builder.Services.AddControllers();
 
@@ -18,6 +33,8 @@ builder.Services.AddScoped<IClientService, ClientService>();
 
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
