@@ -114,7 +114,7 @@ public sealed class BusServiceTests
     }
 
     [TestMethod]
-    public async Task CreateCollection_CollerctionAlreadyExist_ReturnErrorMessage()
+    public async Task CreateCollection_CollectionAlreadyExist_ReturnErrorMessage()
     {
         var collection = new CollectionToCreate(
             "Get", 
