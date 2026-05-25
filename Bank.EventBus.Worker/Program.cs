@@ -28,7 +28,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     ConnectionMultiplexer.Connect("100.122.221.84:6379, abortConnect=false"));
 builder.Services.AddHostedService<RedisRefresh>();
-builder.Services.AddSingleton<RabbitMqConnectionProvider>();
+builder.Services.AddSingleton<IRabbitMqConnectionProvider, RabbitMqConnectionProvider>();
 builder.Services.AddHostedService<BusWorker>();
 
 var host = builder.Build();

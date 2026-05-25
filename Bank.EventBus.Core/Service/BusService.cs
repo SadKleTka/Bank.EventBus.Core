@@ -11,18 +11,21 @@ namespace Bank.EventBus.Core.Service;
 public class BusService : IBusService
 {
     private readonly AppDbContext _context;
-    private readonly RabbitMqConnectionProvider _connectionProvider;
+    private readonly IRabbitMqConnectionProvider _connectionProvider;
     private readonly ILogger<BusService> _logger;
     
-    public BusService(AppDbContext context, RabbitMqConnectionProvider connectionProvider, ILogger<BusService> logger)
+    public BusService(AppDbContext context, IRabbitMqConnectionProvider connectionProvider, ILogger<BusService> logger)
     {
         _context = context;
         _connectionProvider = connectionProvider;
         _logger = logger;
     }
     //Добавил возможность совмещать их в промежуточной таблице
-    public async Task<Message> Bind(BindCollectionOperation bind)
+    public async Task<Message> Bind(BindCollectionOperation? bind)
     {
+        if (bind is null)
+            return new Message("Bind cannot be null", DateTime.UtcNow);
+
         try
         {
             var collection =
@@ -66,42 +69,24 @@ public class BusService : IBusService
     //Получить все операции для просмотра
     public List<OperationToAnswer> GetAllOperations()
     {
-        try
-        {
-            var operations = _context.Operations.ToList();
-            if (operations.Count == 0)
-                throw new ArgumentNullException($"{nameof(operations)} is empty");
-            
-            return OperationMapper(operations);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.Message);
-            throw;
-        }
+         var operations = _context.Operations.ToList();
+          
+         return OperationMapper(operations);
     }
     
     //Получить все коллекции для просмотра
     public List<CollectionToAnswer> GetAllCollections()
     {
-        try
-        {
-            var collections = _context.Collections.ToList();
-            if (collections.Count == 0)
-                throw new ArgumentNullException($"{nameof(collections)} is empty");
-            
-            return CollectionMapper(collections);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.Message);
-            throw;
-        }
+        var collections = _context.Collections.ToList();
+          
+        return CollectionMapper(collections);
     }
 
     //Создание новых операций
-    public async Task<Message> CreateOperation(OperationToCreate operation)
+    public async Task<Message> CreateOperation(OperationToCreate? operation)
     {
+        if (operation is null)
+            return new Message("Operation cannot be null", DateTime.UtcNow);
         try
         {
             var checkOperation = _context.Operations.Any(o => o.Type == operation.Type);
@@ -123,8 +108,10 @@ public class BusService : IBusService
     }
     
     //Добавление коллекций в бд
-    public async Task<Message> CreateCollection(CollectionToCreate collection)
+    public async Task<Message> CreateCollection(CollectionToCreate? collection)
     {
+        if (collection is null)
+            return new Message("Collection cannot be null", DateTime.UtcNow);
         try
         {
             var checkCollection = _context.Collections.Any(c => c.ExchangeName == collection.ExchangeName);

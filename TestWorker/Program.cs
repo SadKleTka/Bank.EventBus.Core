@@ -14,7 +14,7 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.AddSerilog();
 
-builder.Services.AddSingleton<RabbitMqConnectionProvider>();
+builder.Services.AddSingleton<IRabbitMqConnectionProvider, RabbitMqConnectionProvider>();
 builder.Services.AddHostedService<TestWorker>();
 
 var host = builder.Build();

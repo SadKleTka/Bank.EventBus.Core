@@ -9,11 +9,11 @@ namespace Bank.Client.Web.Test;
 public class TestWorker : BackgroundService
 {
     private readonly ILogger<TestWorker> _logger;
-    private readonly RabbitMqConnectionProvider _connectionFactory;
+    private readonly IRabbitMqConnectionProvider _connectionFactory;
     private IChannel _channel;
     private IConnection _connection;
 
-    public TestWorker(RabbitMqConnectionProvider connection, ILogger<TestWorker> logger)
+    public TestWorker(IRabbitMqConnectionProvider connection, ILogger<TestWorker> logger)
     {
         _logger = logger;
         _connectionFactory = connection;
