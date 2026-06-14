@@ -111,7 +111,7 @@ public class BusService : IBusService
     public async Task<Message> CreateCollection(CollectionToCreate? collection)
     {
         if (collection is null)
-            return new Message("Collection cannot be null", DateTime.UtcNow);
+            return new Message("Collection cannot be nulll", DateTime.UtcNow);
         try
         {
             var checkCollection = _context.Collections.Any(c => c.ExchangeName == collection.ExchangeName);
